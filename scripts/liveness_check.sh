@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Check if the redis-dns-server is running properly
-if ! pgrep -x "redis-dns-server" > /dev/null; then
+if ! pgrep -f "redis-dns-server" > /dev/null; then
     echo "redis-dns-server is not running."
     exit 1
 fi
