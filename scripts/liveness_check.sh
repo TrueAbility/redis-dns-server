@@ -7,7 +7,7 @@ if ! pgrep -f "redis-dns-server" > /dev/null; then
 fi
 
 # Execute the 'd' resolver to check DNS resolution
-if ! /d -r ${REDIS_HOST} -d ${DOMAIN}; then
+if ! /d -r ${SERVER_LOAD_BALANCER_IP} -d ${DOMAIN}; then
     echo "DNS resolution check failed."
     exit 1
 fi
