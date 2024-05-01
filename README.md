@@ -4,6 +4,27 @@ This is a DNS server that uses Redis as the backend. Redis records are stored
 according to the FQDN (with trailing dot) as the key, and a JSON payload as
 the value.
 
+The "d" executable located in /bin is a dns resolver used for the Kubernetes liveness probe.
+It has been added to prevent an issue where the redis-dns server would fail to resolve ascreen.co.
+If the DNS server is unable to resolve ascreen.co, just restart the pod.
+
+You can find the repository here: https://github.com/TrueAbility/d
+
+Below a sample of the Kubernetes deployment yaml configuration:
+
+```yaml
+livenessProbe:
+exec:
+  command:
+    - /bin/sh
+    - -c
+    - /liveness_check.sh
+initialDelaySeconds: 30
+periodSeconds: 120
+timeoutSeconds: 10
+failureThreshold: 3
+```
+
 ## JSON Payload:
 
 ```json
@@ -20,9 +41,10 @@ the value.
     "ttl": 300,
 }
 ```
-* supply cnames or ipv4_public_ips, not both
-* mbox admin.example.com # Don't use '@' in DNS email addresses
-* wildcard records, eg. `www.foo-12345.example.com.` are supported.  The Redis
+
+- supply cnames or ipv4_public_ips, not both
+- mbox admin.example.com # Don't use '@' in DNS email addresses
+- wildcard records, eg. `www.foo-12345.example.com.` are supported. The Redis
   key for wildcards is `*.foo-12345.example.com.`.
 
 ## Usage:
@@ -33,9 +55,8 @@ the value.
     -port 5300
 ```
 
-Port `53` is the standard port.  Using a port less than `1024` will require
+Port `53` is the standard port. Using a port less than `1024` will require
 root privileges.
-
 
 ## Development
 
@@ -69,7 +90,6 @@ $ vagrant ssh
 Inside Vagrant, the current working project directory will be accessible at
 `/vagrant`.
 
-
 ### Using Docker and Docker Compose
 
 Either from your local machine running Docker, or from within the Vagrant box:
@@ -88,7 +108,6 @@ To rebuild the image manually:
 $ docker-compose build
 
 ```
-
 
 ## Deployment
 
@@ -136,7 +155,7 @@ $ docker run -itd \
 
 #### Using an Environment File
 
-You can load all `ENV` variables from an `ENV` file.  An example `ENV` file
+You can load all `ENV` variables from an `ENV` file. An example `ENV` file
 can be found at `docker-compose.env.example`, and looks something like:
 
 ```
@@ -163,7 +182,7 @@ $ docker run -itd \
 
 ## Inspiration:
 
- * https://github.com/ConradIrwin/aws-name-server
- * https://github.com/miekg/dns
+- https://github.com/ConradIrwin/aws-name-server
+- https://github.com/miekg/dns
 
 ## TODO List:
