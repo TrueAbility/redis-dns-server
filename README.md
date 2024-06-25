@@ -25,6 +25,20 @@ timeoutSeconds: 10
 failureThreshold: 3
 ```
 
+## How to set initial record for ascreen.co
+
+Use redis-cli and add this value:
+
+```
+SET "ascreen.co." "{\"fqdn\":\"ascreen.co.\",\"cnames\":[\"us-east-1.antimony.io\"],\"ipv4_public_ips\":[],\"ipv6_public_ips\":[],\"mbox\":\"admin.trueability.com.\",\"mx_servers\":[],\"name_servers\":[\"ns01.trueability.com\",\"ns02.trueability.com\"],\"soa\":\"ascreen.co\",\"ttl\":300}"
+```
+
+For staging:
+
+```
+SET "bscreen.co." "{\"fqdn\":\"bscreen.co.\",\"cnames\":[\"us-east-1.antimony.io\"],\"ipv4_public_ips\":[],\"ipv6_public_ips\":[],\"mbox\":\"admin.trueability.com.\",\"mx_servers\":[],\"name_servers\":[\"ns01.falseability.com\",\"ns02.falseability.com\"],\"soa\":\"bscreen.co\",\"ttl\":300}"
+```
+
 ## JSON Payload:
 
 ```json
